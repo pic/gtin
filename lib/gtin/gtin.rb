@@ -42,8 +42,10 @@ module GTIN
     (1..number.length-1).each do |i|
       i.even? ? (even += number[i].chr.to_i) : (odd += number[i].chr.to_i)
     end
-    
-    number[0].chr.to_i == (10 - ((odd * 3) + even) % 10)
+   
+    mod = (odd * 3 + even) % 10
+ 
+    number[0].chr.to_i == (0 == mod ? 0 : 10 - mod)
   end
 
 
