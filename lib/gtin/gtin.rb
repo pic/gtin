@@ -34,18 +34,21 @@ module GTIN
   # Sum the results of step 3 and step 4.
   # divide the result of step 4 by 10. The check digit is the number which adds the remainder to 10.
 
-  # Determine if a gtin value has a valid checksum
-  def valid_checksum?
-    number = self.reverse
+  def checksum
+    number = (self + 'x').reverse
+
     odd = even = 0
-    
     (1..number.length-1).each do |i|
       i.even? ? (even += number[i].chr.to_i) : (odd += number[i].chr.to_i)
     end
-   
     mod = (odd * 3 + even) % 10
- 
-    number[0].chr.to_i == (0 == mod ? 0 : 10 - mod)
+
+    (0 == mod ? 0 : 10 - mod).to_s
+  end
+
+  # Determine if a gtin value has a valid checksum
+  def valid_checksum?
+    self[-1] == self[0..-2].checksum
   end
 
 
